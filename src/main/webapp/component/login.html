@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    <style>
+        .login-form {
+            width: 400px;
+            margin: 100px auto;
+            height: 100px;
+        }
+        .login-form .form-button {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <form>
+        <table class="login-form" border="1" cellspacing="0">
+            <tr>
+                <td>用户名：</td>
+                <td><input type="text" name="username" id="username" v-model="user.username"></td>
+            </tr>
+            <tr>
+                <td>密码：</td>
+                <td><input type="password" name="password" id="password" v-model="user.password"></td>
+            </tr>
+            <tr class="form-button">
+                <td colspan="2">
+                    <input type="button" value="登录" @click="loginHolder">
+                    <input type="reset" value="重置">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script src="../js/vue.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
+<script>
+    Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。
+    new Vue({
+        el:'#app',
+        data() {
+            return {
+                user:{
+                    username:'lcl',
+                    password:''
+                }
+            }
+        },
+        methods:{
+            loginHolder(){
+                axios.post('/user/login',this.user).then(resp=>{
+                    console.log(resp.data)
+                    if (resp.data.code == 10001){
+                        location.href = "../index.jsp"
+                    }else if (resp.data.code == 10000){
+                        alert("登录失败")
+                    }
+                })
+            },
+        }
+    })
+</script>
+</body>
+</html>
